@@ -8,6 +8,11 @@ test('should getRoutes correctly', () => {
   expect(
     getRoutes({
       distPath: '/project/dist',
+      normalizedConfig: {
+        server: {
+          base: '/',
+        },
+      },
       environments: {
         web: {
           distPath: '/project/dist',
@@ -116,6 +121,7 @@ it('normalizeUrl', () => {
 
 describe('ensureAssetPrefix', () => {
   const ASSET_PREFIX = 'https://www.example.com/static/';
+  const CAPITAL_ASSET_PREFIX = 'https://www.{{CDN}}.com/{{CDN_PATH}}/';
 
   it('should handle relative url', () => {
     expect(ensureAssetPrefix('foo/bar.js', ASSET_PREFIX)).toBe(
@@ -151,6 +157,15 @@ describe('ensureAssetPrefix', () => {
     );
     expect(ensureAssetPrefix('//foo.com/bar.js', '/')).toBe('//foo.com/bar.js');
     expect(ensureAssetPrefix('/bar.js', '//foo.com')).toBe('//foo.com/bar.js');
+  });
+
+  it('should keep the original URL', () => {
+    expect(ensureAssetPrefix('foo/bar.js', CAPITAL_ASSET_PREFIX)).toBe(
+      'https://www.{{CDN}}.com/{{CDN_PATH}}/foo/bar.js',
+    );
+    expect(ensureAssetPrefix('/foo/bar.js', CAPITAL_ASSET_PREFIX)).toBe(
+      'https://www.{{CDN}}.com/{{CDN_PATH}}/foo/bar.js',
+    );
   });
 });
 

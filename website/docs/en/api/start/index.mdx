@@ -16,7 +16,7 @@ import { PackageManagerTabs } from '@theme';
 
 ### 2. Create an Rsbuild Instance
 
-You can call the `createRsbuild` method to create an Rsbuild instance:
+You can call the [createRsbuild](/api/javascript-api/core#creatersbuild) method to create an Rsbuild instance:
 
 ```ts
 import { createRsbuild } from '@rsbuild/core';
@@ -39,8 +39,8 @@ await rsbuild.startDevServer();
 After successfully starting dev server, you can see the following logs:
 
 ```
-  > Local:    http://localhost:3000
-  > Network:  http://192.168.0.1:3000
+  ➜ Local:    http://localhost:3000
+  ➜ Network:  http://192.168.0.1:3000
 ```
 
 To deploy the App to production environment, it is recommended to use the [rsbuild.build](/api/javascript-api/instance#rsbuild-build) method, which will build the production outputs.

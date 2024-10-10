@@ -9,6 +9,8 @@ type WatchFiles = {
   // watch options for chokidar
   options?: WatchOptions;
 };
+
+type WatchFilesConfig = WatchFiles | WatchFiles[];
 ```
 
 - **Default:** `undefined`
@@ -104,12 +106,14 @@ export default {
 };
 ```
 
+It should be noted that the reload-server functionality is provided by Rsbuild CLI. If you are using a custom server or an upper-layer framework based on the Rsbuild, this configuration is currently not supported.
+
 ## options
 
 - **Type:** `WatchOptions`
 - **Default:** `undefined`
 
-`watchFiles` is implemented based on [chokidar](https://github.com/paulmillr/chokidar#api), and you can pass chokidar options through `options`.
+`watchFiles` is implemented based on [chokidar v3](https://github.com/paulmillr/chokidar#api), and you can pass chokidar options through `options`.
 
 ```js
 export default {

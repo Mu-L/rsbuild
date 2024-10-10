@@ -43,7 +43,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 1,
               "modules": {
                 "auto": true,
@@ -79,6 +78,7 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
             ],
           },
           /\\\\\\.\\(\\?:ts\\|tsx\\|jsx\\|mts\\|cts\\)\\$/,
+          /\\[\\\\\\\\/\\]@rsbuild\\[\\\\\\\\/\\]core\\[\\\\\\\\/\\]dist\\[\\\\\\\\/\\]/,
         ],
         "test": /\\\\\\.\\(\\?:js\\|jsx\\|mjs\\|cjs\\|ts\\|tsx\\|mts\\|cts\\)\\$/,
         "type": "javascript/auto",
@@ -106,7 +106,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -150,7 +149,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -362,10 +360,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
     DefinePlugin {
       "_args": [
         {
+          "import.meta.env.ASSET_PREFIX": """",
+          "import.meta.env.BASE_URL": "\\"/\\"",
           "import.meta.env.DEV": true,
           "import.meta.env.MODE": ""development"",
           "import.meta.env.PROD": false,
           "process.env.ASSET_PREFIX": """",
+          "process.env.BASE_URL": "\\"/\\"",
         },
       ],
       "affectedHooks": "compilation",
@@ -438,7 +439,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when prod 
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 1,
               "modules": {
                 "auto": true,
@@ -501,7 +501,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when prod 
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -545,7 +544,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when prod 
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -695,31 +693,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when prod 
         "_args": [
           {
             "minimizerOptions": {
-              "exclude": {
-                "clampFunction": false,
-                "color": false,
-                "colorFunction": false,
-                "customMediaQueries": false,
-                "dirSelector": false,
-                "doublePositionGradients": false,
-                "fontFamilySystemUi": false,
-                "hexAlphaColors": false,
-                "isSelector": false,
-                "labColors": false,
-                "langSelectorList": false,
-                "logicalProperties": false,
-                "mediaIntervalSyntax": false,
-                "mediaQueries": false,
-                "mediaRangeSyntax": false,
-                "nesting": false,
-                "notSelectorList": false,
-                "oklabColors": false,
-                "p3Colors": false,
-                "selectors": false,
-                "spaceSeparatedColorNotation": false,
-                "textDecorationThicknessPercent": false,
-                "vendorPrefixes": false,
-              },
               "targets": [
                 "chrome >= 87",
                 "edge >= 88",
@@ -810,10 +783,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when prod 
     DefinePlugin {
       "_args": [
         {
+          "import.meta.env.ASSET_PREFIX": """",
+          "import.meta.env.BASE_URL": "\\"/\\"",
           "import.meta.env.DEV": false,
           "import.meta.env.MODE": ""production"",
           "import.meta.env.PROD": true,
           "process.env.ASSET_PREFIX": """",
+          "process.env.BASE_URL": "\\"/\\"",
         },
       ],
       "affectedHooks": "compilation",
@@ -895,7 +871,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 0,
               "modules": {
                 "auto": true,
@@ -944,7 +919,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -984,7 +958,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -1149,10 +1122,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
     DefinePlugin {
       "_args": [
         {
+          "import.meta.env.ASSET_PREFIX": """",
+          "import.meta.env.BASE_URL": "\\"/\\"",
           "import.meta.env.DEV": true,
           "import.meta.env.MODE": ""development"",
           "import.meta.env.PROD": false,
           "process.env.ASSET_PREFIX": """",
+          "process.env.BASE_URL": "\\"/\\"",
         },
       ],
       "affectedHooks": "compilation",
@@ -1230,7 +1206,6 @@ exports[`tools.rspack > should match snapshot 1`] = `
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 1,
               "modules": {
                 "auto": true,
@@ -1266,6 +1241,7 @@ exports[`tools.rspack > should match snapshot 1`] = `
             ],
           },
           /\\\\\\.\\(\\?:ts\\|tsx\\|jsx\\|mts\\|cts\\)\\$/,
+          /\\[\\\\\\\\/\\]@rsbuild\\[\\\\\\\\/\\]core\\[\\\\\\\\/\\]dist\\[\\\\\\\\/\\]/,
         ],
         "test": /\\\\\\.\\(\\?:js\\|jsx\\|mjs\\|cjs\\|ts\\|tsx\\|mts\\|cts\\)\\$/,
         "type": "javascript/auto",
@@ -1293,7 +1269,6 @@ exports[`tools.rspack > should match snapshot 1`] = `
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -1337,7 +1312,6 @@ exports[`tools.rspack > should match snapshot 1`] = `
                   "syntax": "typescript",
                   "tsx": false,
                 },
-                "preserveAllComments": true,
                 "transform": {
                   "decoratorVersion": "2022-03",
                   "legacyDecorator": false,
@@ -1552,10 +1526,13 @@ exports[`tools.rspack > should match snapshot 1`] = `
     DefinePlugin {
       "_args": [
         {
+          "import.meta.env.ASSET_PREFIX": """",
+          "import.meta.env.BASE_URL": "\\"/\\"",
           "import.meta.env.DEV": true,
           "import.meta.env.MODE": ""development"",
           "import.meta.env.PROD": false,
           "process.env.ASSET_PREFIX": """",
+          "process.env.BASE_URL": "\\"/\\"",
         },
       ],
       "affectedHooks": "compilation",

@@ -14,6 +14,7 @@ import type {
   NormalizedDevConfig,
   Rspack,
 } from '../types';
+import { isCliShortcutsEnabled, setupCliShortcuts } from './cliShortcuts';
 import { getTransformedHtml, loadBundle } from './environment';
 import {
   type RsbuildDevMiddlewareOptions,
@@ -29,7 +30,8 @@ import {
 } from './helper';
 import { createHttpServer } from './httpServer';
 import { notFoundMiddleware } from './middlewares';
-import { onBeforeRestartServer } from './restart';
+import { open } from './open';
+import { onBeforeRestartServer, restartDevServer } from './restart';
 import { setupWatchFiles } from './watchFiles';
 
 type HTTPServer = Server | Http2SecureServer;
@@ -78,6 +80,10 @@ export type RsbuildDevServer = {
    * Print the server URLs.
    */
   printUrls: () => void;
+  /**
+   * Open URL in the browser after starting the server.
+   */
+  open: () => Promise<void>;
 };
 
 const formatDevConfig = (config: NormalizedDevConfig, port: number) => {
@@ -104,9 +110,8 @@ export async function createDevServer<
 ): Promise<RsbuildDevServer> {
   logger.debug('create dev server');
 
-  const { port, host, https } = await getServerConfig({
+  const { port, host, https, portTip } = await getServerConfig({
     config,
-    getPortSilently,
   });
   const devConfig = formatDevConfig(config.dev, port);
 
@@ -118,7 +123,8 @@ export async function createDevServer<
     https,
   };
 
-  let outputFileSystem: Rspack.OutputFileSystem = fs;
+  // TODO: remove this type assertion after Rspack fix the type definition
+  let outputFileSystem = fs as Rspack.OutputFileSystem;
   let lastStats: Rspack.Stats[];
 
   // should register onDevCompileDone hook before startCompile
@@ -162,10 +168,11 @@ export async function createDevServer<
 
     await compilerDevMiddleware.init();
 
+    // TODO: remove this type assertion after Rspack fix the type definition
     outputFileSystem =
       (isMultiCompiler(compiler)
         ? compiler.compilers[0].outputFileSystem
-        : compiler.outputFileSystem) || fs;
+        : compiler.outputFileSystem) || (fs as Rspack.OutputFileSystem);
 
     return {
       middleware: compilerDevMiddleware.middleware,
@@ -182,21 +189,59 @@ export async function createDevServer<
     environments: options.context.environments,
   });
 
-  const printUrls = () => {
+  const cliShortcutsEnabled = isCliShortcutsEnabled(devConfig);
+
+  const printUrls = () =>
     printServerURLs({
       urls,
       port,
       routes,
       protocol,
       printUrls: config.server.printUrls,
+      trailingLineBreak: !cliShortcutsEnabled,
     });
+
+  const openPage = async () => {
+    return open({
+      https,
+      port,
+      routes,
+      config,
+      clearCache: true,
+    });
+  };
+
+  const closeServer = async () => {
+    await options.context.hooks.onCloseDevServer.call();
+    await Promise.all([devMiddlewares.close(), fileWatcher?.close()]);
+  };
+
+  const beforeCreateCompiler = () => {
+    printUrls();
+
+    if (cliShortcutsEnabled) {
+      setupCliShortcuts({
+        openPage,
+        closeServer,
+        printUrls,
+        restartServer: () => restartDevServer({ clear: false }),
+        customShortcuts:
+          typeof devConfig.cliShortcuts === 'boolean'
+            ? undefined
+            : devConfig.cliShortcuts.custom,
+      });
+    }
+
+    if (!getPortSilently && portTip) {
+      logger.info(portTip);
+    }
   };
 
   if (runCompile) {
     // print server url should between listen and beforeCompile
-    options.context.hooks.onBeforeCreateCompiler.tap(printUrls);
+    options.context.hooks.onBeforeCreateCompiler.tap(beforeCreateCompiler);
   } else {
-    printUrls();
+    beforeCreateCompiler();
   }
 
   const compileMiddlewareAPI = runCompile ? await startCompile() : undefined;
@@ -328,11 +373,9 @@ export async function createDevServer<
     connectWebSocket: ({ server }: { server: HTTPServer }) => {
       server.on('upgrade', devMiddlewares.onUpgrade);
     },
-    close: async () => {
-      await options.context.hooks.onCloseDevServer.call();
-      await Promise.all([devMiddlewares.close(), fileWatcher?.close()]);
-    },
+    close: closeServer,
     printUrls,
+    open: openPage,
   };
 
   logger.debug('create dev server done');

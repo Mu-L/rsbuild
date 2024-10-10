@@ -258,6 +258,8 @@ const myPlugin = () => ({
 
 :::tip
 `modifyRsbuildConfig` cannot be used to register additional Rsbuild plugins. This is because at the time `modifyRsbuildConfig` is executed, Rsbuild has already initialized all plugins and started executing the callbacks of the hooks.
+
+For details, please refer to [Plugin registration phase](/config/plugins#plugin-registration-phase).
 :::
 
 ### modifyEnvironmentConfig
@@ -330,7 +332,11 @@ const myPlugin = () => ({
 
 ### modifyRspackConfig
 
-To modify the final Rspack config, you can directly modify the config object, or return a new object to replace the previous object.
+To modify the Rspack config, you can directly modify the config object, or return a new object to replace the previous object.
+
+:::tip
+`modifyRspackConfig` is executed earlier than [tools.rspack](/config/tools/rspack). Therefore, the modifications made by `tools.rspack` cannot be obtained in `modifyRspackConfig`.
+:::
 
 - **Type:**
 
@@ -374,9 +380,7 @@ import RspackChain from '@en/shared/rspackChain.mdx';
 
 <RspackChain />
 
-`modifyBundlerChain` is used to call the rspack-chain to modify the Rspack configuration.
-
-This hook only supports modifying the configuration of the non-differentiated parts of Rspack and webpack. For example, modifying the devtool configuration option (Rspack and webpack have the same devtool property value type), or adding an [Rspack-compatible](https://rspack.dev/guide/compatibility/plugin) webpack plugin.
+`modifyBundlerChain` is used to call `rspack-chain` to modify the Rspack configuration. Its usage is the same as [tools.bundlerChain](/config/tools/bundler-chain).
 
 - **Type:**
 

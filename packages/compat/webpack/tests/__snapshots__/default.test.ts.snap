@@ -56,7 +56,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 0,
               "modules": {
                 "auto": true,
@@ -81,6 +80,7 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
             ],
           },
           /\\\\\\.\\(\\?:ts\\|tsx\\|jsx\\|mts\\|cts\\)\\$/,
+          /\\[\\\\\\\\/\\]@rsbuild\\[\\\\\\\\/\\]core\\[\\\\\\\\/\\]dist\\[\\\\\\\\/\\]/,
         ],
         "test": /\\\\\\.\\(\\?:js\\|jsx\\|mjs\\|cjs\\|ts\\|tsx\\|mts\\|cts\\)\\$/,
         "type": "javascript/auto",
@@ -303,10 +303,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly 1`] = `
     },
     DefinePlugin {
       "definitions": {
+        "import.meta.env.ASSET_PREFIX": """",
+        "import.meta.env.BASE_URL": "\\"/\\"",
         "import.meta.env.DEV": true,
         "import.meta.env.MODE": ""development"",
         "import.meta.env.PROD": false,
         "process.env.ASSET_PREFIX": """",
+        "process.env.BASE_URL": "\\"/\\"",
       },
     },
     ProgressPlugin {
@@ -419,7 +422,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when produ
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 0,
               "modules": {
                 "auto": true,
@@ -662,10 +664,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when produ
     },
     DefinePlugin {
       "definitions": {
+        "import.meta.env.ASSET_PREFIX": """",
+        "import.meta.env.BASE_URL": "\\"/\\"",
         "import.meta.env.DEV": false,
         "import.meta.env.MODE": ""production"",
         "import.meta.env.PROD": true,
         "process.env.ASSET_PREFIX": """",
+        "process.env.BASE_URL": "\\"/\\"",
       },
     },
     ProgressPlugin {
@@ -778,7 +783,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 0,
               "modules": {
                 "auto": true,
@@ -970,10 +974,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
     RsbuildCorePlugin {},
     DefinePlugin {
       "definitions": {
+        "import.meta.env.ASSET_PREFIX": """",
+        "import.meta.env.BASE_URL": "\\"/\\"",
         "import.meta.env.DEV": false,
         "import.meta.env.MODE": ""production"",
         "import.meta.env.PROD": true,
         "process.env.ASSET_PREFIX": """",
+        "process.env.BASE_URL": "\\"/\\"",
       },
     },
     ProgressPlugin {
@@ -1084,7 +1091,6 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
           {
             "loader": "<ROOT>/packages/core/compiled/css-loader/index.js",
             "options": {
-              "_skipReuseAST": true,
               "importLoaders": 0,
               "modules": {
                 "auto": true,
@@ -1261,10 +1267,13 @@ exports[`applyDefaultPlugins > should apply default plugins correctly when targe
     RsbuildCorePlugin {},
     DefinePlugin {
       "definitions": {
+        "import.meta.env.ASSET_PREFIX": """",
+        "import.meta.env.BASE_URL": "\\"/\\"",
         "import.meta.env.DEV": false,
         "import.meta.env.MODE": ""production"",
         "import.meta.env.PROD": true,
         "process.env.ASSET_PREFIX": """",
+        "process.env.BASE_URL": "\\"/\\"",
       },
     },
     ProgressPlugin {

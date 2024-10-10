@@ -6,10 +6,11 @@ import { logger } from '../logger';
 import type {
   InternalContext,
   NormalizedConfig,
-  PreviewServerOptions,
+  PreviewOptions,
   RequestHandler,
   ServerConfig,
 } from '../types';
+import { isCliShortcutsEnabled, setupCliShortcuts } from './cliShortcuts';
 import {
   type StartServerResult,
   getAddressUrls,
@@ -21,8 +22,10 @@ import {
 import { createHttpServer } from './httpServer';
 import {
   faviconFallbackMiddleware,
+  getBaseMiddleware,
   getRequestLoggerMiddleware,
 } from './middlewares';
+import { open } from './open';
 
 type RsbuildProdServerOptions = {
   pwd: string;
@@ -51,7 +54,7 @@ export class RsbuildProdServer {
   }
 
   private async applyDefaultMiddlewares() {
-    const { headers, proxy, historyApiFallback, compress } =
+    const { headers, proxy, historyApiFallback, compress, base } =
       this.options.serverConfig;
 
     if (logger.level === 'verbose') {
@@ -89,7 +92,11 @@ export class RsbuildProdServer {
       this.app.on('upgrade', upgrade);
     }
 
-    this.applyStaticAssetMiddleware();
+    if (base && base !== '/') {
+      this.middlewares.use(getBaseMiddleware({ base }));
+    }
+
+    await this.applyStaticAssetMiddleware();
 
     if (historyApiFallback) {
       const { default: connectHistoryApiFallback } = await import(
@@ -147,11 +154,10 @@ export class RsbuildProdServer {
 export async function startProdServer(
   context: InternalContext,
   config: NormalizedConfig,
-  { getPortSilently }: PreviewServerOptions = {},
+  { getPortSilently }: PreviewOptions = {},
 ): Promise<StartServerResult> {
-  const { port, host, https } = await getServerConfig({
+  const { port, host, https, portTip } = await getServerConfig({
     config,
-    getPortSilently,
   });
 
   const { default: connect } = await import('connect');
@@ -198,24 +204,55 @@ export async function startProdServer(
 
         const protocol = https ? 'https' : 'http';
         const urls = getAddressUrls({ protocol, port, host });
+        const cliShortcutsEnabled = isCliShortcutsEnabled(config.dev);
 
-        printServerURLs({
-          urls,
-          port,
-          routes,
-          protocol,
-          printUrls: serverConfig.printUrls,
-        });
-
-        const onClose = async () => {
+        const closeServer = async () => {
           await Promise.all([server.close(), serverTerminator()]);
         };
+
+        const printUrls = () =>
+          printServerURLs({
+            urls,
+            port,
+            routes,
+            protocol,
+            printUrls: serverConfig.printUrls,
+            trailingLineBreak: !cliShortcutsEnabled,
+          });
+
+        const openPage = async () => {
+          return open({
+            https,
+            port,
+            routes,
+            config,
+            clearCache: true,
+          });
+        };
+
+        printUrls();
+
+        if (cliShortcutsEnabled) {
+          setupCliShortcuts({
+            openPage,
+            closeServer,
+            printUrls,
+            customShortcuts:
+              typeof config.dev.cliShortcuts === 'boolean'
+                ? undefined
+                : config.dev.cliShortcuts.custom,
+          });
+        }
+
+        if (!getPortSilently && portTip) {
+          logger.info(portTip);
+        }
 
         resolve({
           port,
           urls: urls.map((item) => item.url),
           server: {
-            close: onClose,
+            close: closeServer,
           },
         });
       },

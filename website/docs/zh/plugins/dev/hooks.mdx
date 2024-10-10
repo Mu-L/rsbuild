@@ -256,7 +256,7 @@ const myPlugin = () => ({
 ```
 
 :::tip
-`modifyRsbuildConfig` 不能用于注册额外的 Rsbuild 插件。这是因为在执行 `modifyRsbuildConfig` 时，Rsbuild 已经初始化了所有插件，并开始执行 hooks 的回调函数。
+`modifyRsbuildConfig` 不能用于注册额外的 Rsbuild 插件。这是因为在执行 `modifyRsbuildConfig` 时，Rsbuild 已经初始化了所有插件，并开始执行 hooks 的回调函数。详情可参考 [插件注册时机](/config/plugins#插件注册时机)。
 :::
 
 ### modifyEnvironmentConfig
@@ -328,7 +328,11 @@ const myPlugin = () => ({
 
 ### modifyRspackConfig
 
-修改最终的 Rspack 配置，你可以直接修改传入的 config 对象，也可以返回一个新的对象来替换传入的对象。
+修改 Rspack 配置，你可以直接修改传入的 config 对象，也可以返回一个新的对象来替换传入的对象。
+
+:::tip
+`modifyRspackConfig` 的执行时机早于 [tools.rspack](/config/tools/rspack)。因此，无法在 `modifyRspackConfig` 中获取到 `tools.rspack` 所做的修改。
+:::
 
 - **类型：**
 
@@ -372,7 +376,7 @@ import RspackChain from '@zh/shared/rspackChain.mdx';
 
 <RspackChain />
 
-`modifyBundlerChain` 用于调用 rspack-chain 来修改 Rspack 的配置。
+`modifyBundlerChain` 用于调用 rspack-chain 来修改 Rspack 的配置，它的用法与 [tools.bundlerChain](/config/tools/bundler-chain) 相同。
 
 - **类型：**
 

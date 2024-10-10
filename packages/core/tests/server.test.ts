@@ -13,6 +13,7 @@ test('formatRoutes', () => {
         foo: 'src/index.ts',
         bar: 'src/index.ts',
       },
+      '/',
       undefined,
       undefined,
     ),
@@ -37,6 +38,7 @@ test('formatRoutes', () => {
         index: 'src/index.ts',
         foo: 'src/index.ts',
       },
+      '/',
       '/hello',
       undefined,
     ),
@@ -57,6 +59,7 @@ test('formatRoutes', () => {
         index: 'src/index.ts',
         foo: 'src/index.ts',
       },
+      '/',
       '/hello/',
       undefined,
     ),
@@ -78,6 +81,7 @@ test('formatRoutes', () => {
         bar: 'src/index.ts',
         index: 'src/index.ts',
       },
+      '/',
       undefined,
       undefined,
     ),
@@ -101,6 +105,7 @@ test('formatRoutes', () => {
       {
         foo: 'src/index.ts',
       },
+      '/',
       undefined,
       undefined,
     ),
@@ -118,6 +123,7 @@ test('formatRoutes', () => {
         foo: 'src/index.ts',
         bar: 'src/index.ts',
       },
+      '/',
       'html',
       undefined,
     ),
@@ -141,6 +147,7 @@ test('formatRoutes', () => {
       {
         index: 'src/index.ts',
       },
+      '/',
       'html',
       'nested',
     ),
@@ -177,8 +184,8 @@ test('printServerURLs', () => {
   });
 
   expect(message!).toMatchInlineSnapshot(`
-    "  > local     http://localhost:3000/
-      > network   http://192.168.0.1:3000/
+    "  ➜ local     http://localhost:3000/
+      ➜ network   http://192.168.0.1:3000/
     "
   `);
 
@@ -212,12 +219,12 @@ test('printServerURLs', () => {
   });
 
   expect(message!).toMatchInlineSnapshot(`
-    "  > local
+    "  ➜ local
       - index    http://localhost:3000/
       - foo      http://localhost:3000/html/foo
       - bar      http://localhost:3000/bar
 
-      > network
+      ➜ network
       - index    http://192.168.0.1:3000/
       - foo      http://192.168.0.1:3000/html/foo
       - bar      http://192.168.0.1:3000/bar

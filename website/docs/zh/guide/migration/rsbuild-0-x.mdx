@@ -1,6 +1,6 @@
 # 从 Rsbuild 0.x 迁移
 
-当前文档列出了从 Rsbuild v0.7 到 v1.0 的所有不兼容更新，你可以参考此文档来迁移。
+当前文档列出了从 Rsbuild 0.7 到 1.0 的所有不兼容更新，你可以参考此文档来迁移。
 
 > 查看 [Breaking changes in Rsbuild v1.0.0](https://github.com/web-infra-dev/rsbuild/discussions/2508) 了解更多细节。
 
@@ -403,7 +403,7 @@ Rsbuild 1.0 对插件、dev server 等 API 进行了部分调整和优化。
 
 - `onBeforeBuild` 钩子在 watch 模式下支持触发多次。
 - 新增 `onBeforeEnvironmentCompile` 和 `onAfterEnvironmentCompile` 钩子，分别在执行单个 environment 的构建前/后触发。
-- 移除 `api.getHtmlPath`，改为 `environment.htmlPaths`。
+- 移除 `api.getHtmlPaths`，改为 `environment.htmlPaths`。
 - 移除 `api.context.entry`，改为 `environment.entry`。
 - 移除 `api.context.targets`，改为 `environment.target`。
 - 移除 `rsbuildServer.onHTTPUpgrade`，改为 `rsbuildServer.connectWebSocket`。

@@ -16,7 +16,7 @@ import { PackageManagerTabs } from '@theme';
 
 ### 2. 创建 Rsbuild 实例
 
-你可以调用 `createRsbuild` 方法来创建一个 Rsbuild 实例对象：
+你可以调用 [createRsbuild](/api/javascript-api/core#creatersbuild) 方法来创建一个 Rsbuild 实例对象：
 
 ```ts
 import { createRsbuild } from '@rsbuild/core';
@@ -39,8 +39,8 @@ await rsbuild.startDevServer();
 成功启动 dev server 后，可以看到以下日志信息：
 
 ```
-  > Local:    http://localhost:3000
-  > Network:  http://192.168.0.1:3000
+  ➜ Local:    http://localhost:3000
+  ➜ Network:  http://192.168.0.1:3000
 ```
 
 在生产环境部署场景，建议使用 [rsbuild.build](/api/javascript-api/instance#rsbuild-build) 方法，调用后会构建出生产模式产物。
